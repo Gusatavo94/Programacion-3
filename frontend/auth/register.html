@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Hermes</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <nav> 
+            <!--logo y fecha--> 
+            <div>
+                <img src="../assets/logo.svg" width="50" height="50">
+                <span style="font-size: 2em; font-weight: bold" >Hermes</span>
+                <span id="fecha-actual"></span>
+            </div>
+
+            <!--navegacion-->
+            <ul class="nav-elements">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../updates.html">Novedades</a></li>
+                <li><a href="../apps.html">Aplicaciones</a></li>
+
+                <!--botones-->
+                <span id="auth-buttons-group" style="display: flex; gap: 10px; align-items: center;">
+                    <li>
+                        <button onclick="location.href='login.html'"> Iniciar Sesión </button>
+                    </li>
+                </span>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="login-conteiner">
+        <h2>Registrarse</h2>
+
+        <form class="form-register" onsubmit="register(event)">
+            <div class="form-group"> 
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" placeholder="ejemplo@correo.com" required>
+            </div>
+
+            <div class="form-group"> 
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" placeholder="Nombre de usuario" required>
+            </div>
+
+            <div class="form-group"> 
+                <label for="pw">Contraseña</label>
+                <input type="password" id="pw" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group"> 
+                <label for="pw-confirm">Confirmar Contraseña</label>
+                <input type="password" id="pw-confirm" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit">Registrarse</button>
+        </form>
+
+        <p>¿Ya tienes cuenta? 
+            <a href="login.html">Inicia sesión aquí.</a>
+        </p>
+    </main>
+    <script src="../script.js"></script>
+</body>
+</html>
