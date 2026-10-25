@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    //cargar las noticas
-    const newsContainer = document.getElementById('news-container');
-    const wantCategory = newsContainer ? newsContainer.getAttribute('data-category') : null;
+    //cargar los posts
+    const postsContainer = document.getElementById('posts-container');
+    const wantCategory = postsContainer ? postsContainer.getAttribute('data-category') : null;
 
-    loadNews(wantCategory);
-    loadDetailNews();
+    loadPosts(wantCategory);
+    loadDetailPost();
 });
 
 //login
@@ -116,69 +116,70 @@ window.logout = () => {
     }
 };
 
-//buscar noticias
+//buscar post
 window.search = () => {
     const query = document.getElementById('search-input').value.toLowerCase().trim();
     if (!query) return;
-    const articles = document.querySelectorAll('.news-article');
+    const articles = document.querySelectorAll('.post-article');
     articles.forEach(article => {
         const title = article.querySelector('h2').textContent.toLowerCase();
         article.style.display = title.includes(query) ? 'block' : 'none';
     });
 };
 
-//load the news:
-async function loadNews(category = null) {
-    const container = document.getElementById('news-container');
+//cargar posts
+async function loadPosts(category = null) {
+    const container = document.getElementById('posts-container');
     if (!container) return;
 
     try {
-        const response = await fetch('/api/news');
-        const newsList = await response.json();
+        const response = await fetch('/api/posts');
+        const posts = await response.json();
 
         if (response.ok) {
             container.innerHTML = '';
 
-            if (newsList.length === 0) {
-                container.innerHTML = '<p style="text-align: center; width: 100%;">No hay novedades registradas.</p>';
+            if (posts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; width: 100%;">No hay publicaciones registradas.</p>';
                 return;
             }
 
             //filtrado:
-            let filteredNews = newsList;
+            let filteredPosts = posts;
 
             if (category === 'Novedad') {
-                filteredNews = newsList.filter(item => item.categoria === 'Novedad');
+                filteredPosts = posts.filter(item => item.category === 'Novedad');
             }
             else if (category === 'Aplicacion') {
-                filteredNews = newsList.filter(item => item.categoria === 'Tecnologia' || item.categoria === 'Programas');
+                filteredPosts = posts.filter(item => item.category === 'Tecnologia' || item.category === 'Programas');
             }
-            if (filteredNews.length === 0) {
-                container.innerHTML = '<p style="text-align: center; width: 100%;">No hay novedades en esta sección.</p>';
+
+            if (filteredPosts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; width: 100%;">No hay publicaciones en esta sección.</p>';
                 return;
             }
 
-            filteredNews.forEach(item => {
+            filteredPosts.forEach(item => {
                 const article = document.createElement('article');
-                article.className = 'news-article';
+                article.className = 'post-article';
                 article.innerHTML = `
-                    <a href="new.html?id=${item._id}" style="text-decoration: none; color: inherit;">
-                        <img src="${item.img}" alt="${item.titulo}">
-                        <span class="category-badge">${item.categoria}</span>
-                        <h2>${item.titulo}</h2>
-                        <p>Por ${item.autor}</p>
+                    <a href="new.html?id=${item.id}" style="text-decoration: none; color: inherit;">
+                        <img src="${item.image}" alt="${item.title}">
+                        <span class="category-badge">${item.category}</span>
+                        <h2>${item.title}</h2>
+                        <p>Por usuario #${item.user_id}</p>
                     </a>
                 `;
                 container.appendChild(article);
             });
         }
     } catch (err) {
-        console.error('Error al cargar noticias:', err);
+        console.error('Error al cargar posts:', err);
     }
 }
 
-//cargar detalle de noticia
-async function loadDetailNews() {
+//cargar detalle de post
+async function loadDetailPost() {
     const titleEl = document.getElementById('new-title');
     if (!titleEl) return;
 
@@ -186,29 +187,30 @@ async function loadDetailNews() {
     const id = urlParams.get('id');
 
     if (!id) {
-        titleEl.textContent = 'Noticia no especificada';
+        titleEl.textContent = 'Post no especificado';
         return;
     }
 
     try {
-        const response = await fetch(`/api/news/${id}`);
+        const response = await fetch(`/api/posts/${id}`);
         const item = await response.json();
-
         if (response.ok) {
-            document.getElementById('new-title').textContent = item.titulo;
-            document.getElementById('new-author').textContent = item.autor;
-            document.getElementById('new-category').textContent = item.categoria;
-            document.getElementById('new-image').src = item.img;
-            document.getElementById('new-image').alt = item.titulo;
-            document.getElementById('new-description').textContent = item.descripcion;
+            document.getElementById('new-title').textContent = item.title;
+            document.getElementById('new-author').textContent = `Usuario #${item.user_id}`;
+            document.getElementById('new-category').textContent = item.category;
+            document.getElementById('new-image').src = item.image;
+            document.getElementById('new-image').alt = item.title;
+            document.getElementById('new-description').textContent = item.content;
             
-            const fecha = new Date(item.createdAt);
+            const fecha = new Date(item.created_at);
             document.getElementById('new-date').textContent = fecha.toLocaleDateString('es-ES');
-        } else {
-            titleEl.textContent = 'Error: Noticia no encontrada';
         }
-    } catch (err) {
-        console.error('Error al cargar la noticia:', err);
+        else {
+            titleEl.textContent = 'Error: Post no encontrado';
+        }
+    }
+    catch (err) {
+        console.error('Error al cargar el post:', err);
         titleEl.textContent = 'Error al conectar con el servidor';
     }
 }
