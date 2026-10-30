@@ -194,3 +194,38 @@ button:hover {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
 }
+
+.form-create-post {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-create-post input, .form-create-post textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius);
+    outline: none;
+}
+
+.form-create-post input:focus, .form-create-post textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
+.form-create-post button {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius);
+    outline: none;
+}
+
+.form-create-post button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}

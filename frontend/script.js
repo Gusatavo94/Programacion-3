@@ -112,6 +112,57 @@ window.logout = () => {
     }
 };
 
+// crear posts
+
+async function createPost(event){
+    event.preventDefault();
+
+    //validaciones:
+    const user = getCurrentUser();
+    const token = getToken();
+
+    if (!user || !token) {
+        alert("Primero Logeate");
+        return;
+    }
+
+    //datos del post
+    const title = document.getElementById('title');
+    const imageUrl = document.getElementById('image-url');
+    const content = document.getElementById('content');
+    const category = document.getElementById('category');
+
+    //validaciones
+    if (!title || !imageUrl || !content || !category) {
+        alert("Todos los campos son obligatorios");
+        return;
+    }
+
+    //hacemos el fetch
+    const response = await fetch('/api/posts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            user_id: user.id,
+            title: title.value,
+            content: content.value,
+            image: imageUrl.value,
+            category: category.value
+        })
+    });
+
+    if (response.ok) {
+        alert("Post creado exitosamente");
+        window.location.href = '/index.html';
+    }
+    else {
+        alert("Error al crear el post");
+    }
+}
+
 //buscar post
 window.search = () => {
     const query = document.getElementById('search-input').value.toLowerCase().trim();

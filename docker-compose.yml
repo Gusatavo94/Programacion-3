@@ -1,11 +1,11 @@
 services:
   db:
     image: mysql:8.4
-    container_name: progra3
+    container_name: progra3-mysql
     restart: unless-stopped
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: hermes
+      MYSQL_DATABASE: postIA
     ports:
       - "3306:3306"
     volumes:

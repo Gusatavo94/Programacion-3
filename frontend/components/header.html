@@ -2,25 +2,39 @@
     <nav> 
         <!-- Logo y fecha --> 
         <div>
-            <img src="/assets/logo.svg" width="50" height="50">
+            <a href="/index.html">
+                <img src="/assets/logo.svg" width="50" height="50">
+            </a>
             <span style="font-size: 2em; font-weight: bold">PostIA</span>
         </div>
 
+
         <!-- Search bar -->
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Buscar">
-            <button id="search-btn" onclick="search()">
-                <img src="/assets/search.svg">
-            </button>
+        <div>
+            <div>
+            <ul class="nav-elements">
+                <li><a href="/index.html">Tus Posts</a></li>
+                <li><button class="secondary" onclick="location.href='/pages/create-post.html'">Crear Post</button></li>
+            </ul>
         </div>
 
-        <!-- Navegación -->
-        <ul class="nav-elements">
-            <li><a href="/index.html">Inicio</a></li>
-            <li><a href="/pages/updates.html">Actualizaciones</a></li>
-            <li><a href="/pages/apps.html">Aplicaciones</a></li>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar">
+                <button id="search-btn" onclick="search()">
+                    <img src="/assets/search.svg">
+                </button>
 
-            <!-- Botones de sesión -->
+                <!-- Navegación -->
+                <ul class="nav-elements">
+                    <li><a href="/pages/updates.html">Actualizaciones</a></li>
+                    <li><a href="/pages/apps.html">Aplicaciones</a></li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <div>
             <span id="auth-buttons-group" style="display: flex; gap: 10px; align-items: center;">
                 <li>
                     <button onclick="location.href='/pages/auth/login.html'"> Iniciar Sesión </button>
@@ -29,6 +43,7 @@
                     <button onclick="location.href='/pages/auth/register.html'"> Registrarse </button>
                 </li>
             </span>
-        </ul>
+        </div>
+        
     </nav>
 </header>
