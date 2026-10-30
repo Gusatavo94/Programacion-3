@@ -4,33 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Hermes</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <header>
-        <nav> 
-            <!--logo y fecha--> 
-            <div>
-                <img src="../assets/logo.svg" width="50" height="50">
-                <span style="font-size: 2em; font-weight: bold" >Hermes</span>
-                <span id="fecha-actual"></span>
-            </div>
-
-            <!--navegacion-->
-            <ul class="nav-elements">
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../updates.html">Novedades</a></li>
-                <li><a href="../apps.html">Aplicaciones</a></li>
-
-                <!--botones-->
-                <span id="auth-buttons-group" style="display: flex; gap: 10px; align-items: center;">
-                    <li>
-                        <button onclick="location.href='login.html'"> Iniciar Sesión </button>
-                    </li>
-                </span>
-            </ul>
-        </nav>
-    </header>
+    <div id="header-container"></div>
 
     <main class="login-conteiner">
         <h2>Registrarse</h2>
@@ -63,6 +40,6 @@
             <a href="login.html">Inicia sesión aquí.</a>
         </p>
     </main>
-    <script src="../script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>

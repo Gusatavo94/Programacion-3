@@ -1,41 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-    //fecha actual
-    const date = document.getElementById('fecha-actual');
-    const today = new Date();
-    const months = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-    const day = today.getDate();
-    const mounth = months[today.getMonth()];
-    const year = today.getFullYear();
-    const dateText = `${day} ${mounth}, ${year}`;
-    if (date) {
-        date.textContent = dateText;
-    }
+    loadHeader();
 
-    const token = localStorage.getItem('token');
-    const authGroup = document.getElementById('auth-buttons-group');
-
-    if (token && authGroup) {
-        const username = localStorage.getItem('username') || localStorage.getItem('userEmail');
-        
-        //oculatamos botones y mostramos al username
-        authGroup.innerHTML = `
-            <div class="user-profile-menu">
-                <span class="user-icon">
-                    <img src="assets/user-icon.svg">
-                </span>
-                <span class="user-name">${username}</span>
-                <button onclick="logout()" class="logout-btn">Salir</button>
-            </div>
-        `;
-    }
-
-    //cargar los posts
+    //cargamos los posts
     const postsContainer = document.getElementById('posts-container');
     const wantCategory = postsContainer ? postsContainer.getAttribute('data-category') : null;
 
     loadPosts(wantCategory);
     loadDetailPost();
 });
+
+async function loadHeader() {
+    const container = document.getElementById('header-container');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/components/header.html');
+        if (!response.ok) return;
+
+        //inyectamos el header
+        container.innerHTML = await response.text();
+
+        //verificamos si hay usuario logueado
+        const user = getCurrentUser();
+        const authGroup = document.getElementById('auth-buttons-group');
+        if (user && authGroup) {
+            authGroup.innerHTML = `
+                <div class="user-profile-menu">
+                    <span class="user-icon">
+                        <img src="/assets/user-icon.svg">
+                    </span>
+                    <span class="user-name">${user.username}</span>
+                    <button onclick="logout()" class="logout-btn">Salir</button>
+                </div>
+            `;
+        }
+    } catch (err) {
+        console.error('Error cargando el header:', err);
+    }
+}
 
 //login
 async function login(event) {
@@ -53,10 +55,8 @@ async function login(event) {
         });
         const data = await response.json();
         if (response.ok) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userEmail', data.user.email);
-            localStorage.setItem('username', data.user.username);
-            window.location.href = '../index.html';
+            saveSession(data.token, data.user);
+            window.location.href = '/index.html';
         } 
         else {
             alert(data.message || 'Error al iniciar sesión');
@@ -90,11 +90,8 @@ async function register(event) {
         });
         const data = await response.json();
         if (response.ok) {
-            alert('Registro exitoso! Iniciando sesión...');
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userEmail', data.user.email);
-            localStorage.setItem('username', data.user.username);
-            window.location.href = '../index.html';
+            saveSession(data.token, data.user);
+            window.location.href = '/index.html';
         } 
         else {
             alert(data.message || 'Error al registrar el usuario');
@@ -110,9 +107,8 @@ async function register(event) {
 window.logout = () => {
     if (window.confirm("¿Seguro que desea cerrar sesión?")) {
         localStorage.removeItem('token');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('username');
-        window.location.reload();
+        localStorage.removeItem('user');
+        window.location.href = '/index.html';
     }
 };
 
@@ -163,7 +159,7 @@ async function loadPosts(category = null) {
                 const article = document.createElement('article');
                 article.className = 'post-article';
                 article.innerHTML = `
-                    <a href="new.html?id=${item.id}" style="text-decoration: none; color: inherit;">
+                    <a href="/pages/new.html?id=${item.id}" style="text-decoration: none; color: inherit;">
                         <img src="${item.image}" alt="${item.title}">
                         <span class="category-badge">${item.category}</span>
                         <h2>${item.title}</h2>
@@ -213,4 +209,23 @@ async function loadDetailPost() {
         console.error('Error al cargar el post:', err);
         titleEl.textContent = 'Error al conectar con el servidor';
     }
+}
+
+//helpers:
+function saveSession(token, user) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+function getToken() {
+    return localStorage.getItem('token');
+}
+
+function getCurrentUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+}
+
+function isAuthenticated() {
+    return !!getToken();
 }

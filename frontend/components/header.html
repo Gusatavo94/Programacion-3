@@ -1,0 +1,34 @@
+<header>
+    <nav> 
+        <!-- Logo y fecha --> 
+        <div>
+            <img src="/assets/logo.svg" width="50" height="50">
+            <span style="font-size: 2em; font-weight: bold">PostIA</span>
+        </div>
+
+        <!-- Search bar -->
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Buscar">
+            <button id="search-btn" onclick="search()">
+                <img src="/assets/search.svg">
+            </button>
+        </div>
+
+        <!-- Navegación -->
+        <ul class="nav-elements">
+            <li><a href="/index.html">Inicio</a></li>
+            <li><a href="/pages/updates.html">Actualizaciones</a></li>
+            <li><a href="/pages/apps.html">Aplicaciones</a></li>
+
+            <!-- Botones de sesión -->
+            <span id="auth-buttons-group" style="display: flex; gap: 10px; align-items: center;">
+                <li>
+                    <button onclick="location.href='/pages/auth/login.html'"> Iniciar Sesión </button>
+                </li>
+                <li>
+                    <button onclick="location.href='/pages/auth/register.html'"> Registrarse </button>
+                </li>
+            </span>
+        </ul>
+    </nav>
+</header>

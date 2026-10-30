@@ -1,28 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%"
+     fill="none" style="color:#1F2937">
+    <!-- PostIA: sobre + cursor. Minimalista, sin fondo ni resplandor.
+         El trazo usa currentColor (hereda el color del texto); el cursor usa el ámbar de marca. -->
+
     <defs>
-        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="15" dy="15" stdDeviation="15" flood-color="#000000" flood-opacity="0.75" />
-        </filter>
+        <!-- Silueta del cursor engrosada: recorta el sobre para que el puntero
+             respire sin necesidad de un fondo opaco. -->
+        <mask id="cursorKnockout">
+            <rect width="64" height="64" fill="#fff" />
+            <path d="M0 0 L0 16.5 L4.2 12.6 L7.6 19.6 L11 18 L7.7 11.2 L13.2 10.6 Z"
+                  transform="translate(33.5 23.5) scale(0.95)"
+                  fill="#000" stroke="#000" stroke-width="5"
+                  stroke-linejoin="round" stroke-linecap="round" />
+        </mask>
     </defs>
-    <g fill="none" stroke="#FFC107" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
 
-        <path d="M210,180 C140,150 90,120 80,120 C100,135 130,160 190,180" />
-        <path d="M190,180 C130,165 90,160 95,175 C120,190 150,200 185,205" />
-        <path d="M185,205 C140,195 110,200 115,215 C135,225 160,230 180,235" />
-        <path d="M180,235 C150,230 130,240 135,250 C145,255 160,250 175,250" />
-
-        <path d="M190,285 C220,285 240,310 240,340" />
-
-        <path d="M180,340 L180,360 L240,360 L240,345" />
-        <path d="M245,355 L405,355 C415,355 410,340 400,340" />
-
-        <path d="M210,180 L280,180 L280,230" />
-        <path d="M280,250 C280,290 320,310 380,330 C400,335 405,340 400,340 L180,340 L180,250" />
-
-        <path d="M170,230 L220,230 M170,250 L220,250" />
-        <path d="M250,230 L290,230 M250,250 L290,250" />
-
-        <path d="M220,220 L220,260 M250,220 L250,260 M220,240 L250,240" stroke-width="8" />
-
+    <!-- Sobre -->
+    <g mask="url(#cursorKnockout)" stroke="currentColor" stroke-width="3.6"
+       stroke-linecap="round" stroke-linejoin="round">
+        <rect x="6" y="14" width="52" height="36" rx="9" />
+        <path d="M11 19.5 L32 36 L53 19.5" />
     </g>
+
+    <!-- Cursor -->
+    <path d="M0 0 L0 16.5 L4.2 12.6 L7.6 19.6 L11 18 L7.7 11.2 L13.2 10.6 Z"
+          transform="translate(33.5 23.5) scale(0.95)"
+          fill="#FFC107" stroke="#FFC107" stroke-width="1.6"
+          stroke-linejoin="round" stroke-linecap="round" />
 </svg>
