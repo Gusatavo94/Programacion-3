@@ -126,11 +126,11 @@ async function createPost(event){
         return;
     }
 
-    //datos del post
-    const title = document.getElementById('title');
-    const imageUrl = document.getElementById('image-url');
-    const content = document.getElementById('content');
-    const category = document.getElementById('category');
+    //datos del post | trim es para evitar espacios vacios
+    const title = document.getElementById('title').value.trim();
+    const imageUrl = document.getElementById('image-url').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const category = document.getElementById('category').value.trim();
 
     //validaciones
     if (!title || !imageUrl || !content || !category) {
@@ -147,16 +147,21 @@ async function createPost(event){
         },
         body: JSON.stringify({
             user_id: user.id,
-            title: title.value,
-            content: content.value,
-            image: imageUrl.value,
-            category: category.value
+            title: title,
+            content: content,
+            image: imageUrl,
+            category: category
         })
     });
+
+    const data = await response.json();
 
     if (response.ok) {
         alert("Post creado exitosamente");
         window.location.href = '/index.html';
+    }
+    else if (response.status === 400) { //validacion de mensaje
+        alert(data.message);
     }
     else {
         alert("Error al crear el post");
