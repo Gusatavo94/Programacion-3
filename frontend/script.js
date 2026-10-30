@@ -113,7 +113,6 @@ window.logout = () => {
 };
 
 // crear posts
-
 async function createPost(event){
     event.preventDefault();
 
@@ -204,6 +203,14 @@ async function loadPosts(category = null) {
             }
             else if (category === 'Aplicacion') {
                 filteredPosts = posts.filter(item => item.category === 'Tecnologia' || item.category === 'Programas');
+            }
+            else if (category === 'Tus Posts') {
+                const user = getCurrentUser();
+                if (!user) {
+                    container.innerHTML = '<p style="text-align: center; width: 100%;">Debes <a href="/pages/auth/login.html">iniciar sesión</a> para ver tus publicaciones.</p>';
+                    return;
+                }
+                filteredPosts = posts.filter(item => Number(item.user_id) === Number(user.id));
             }
 
             if (filteredPosts.length === 0) {
